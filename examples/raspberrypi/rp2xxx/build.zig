@@ -20,7 +20,6 @@ pub fn build(b: *std.Build) void {
         .{ .target = raspberrypi.pico, .name = "pico_flash-id", .file = "src/rp2040_only/flash_id.zig" },
         .{ .target = raspberrypi.pico, .name = "pico_random", .file = "src/rp2040_only/random.zig" },
         .{ .target = raspberrypi.pico, .name = "pico_rtc", .file = "src/rp2040_only/rtc.zig" },
-        .{ .target = raspberrypi.pico, .name = "pico_usb-hid", .file = "src/rp2040_only/usb_hid.zig" },
         .{ .target = raspberrypi.pico, .name = "pico_multicore", .file = "src/rp2040_only/blinky_core1.zig" },
         .{ .target = raspberrypi.pico, .name = "pico_hd44780", .file = "src/rp2040_only/hd44780.zig" },
         .{ .target = raspberrypi.pico, .name = "pico_pcf8574", .file = "src/rp2040_only/pcf8574.zig" },
@@ -64,6 +63,7 @@ pub fn build(b: *std.Build) void {
         .{ .name = "squarewave", .file = "src/squarewave.zig" },
         .{ .name = "ws2812", .file = "src/ws2812.zig" },
         .{ .name = "blinky", .file = "src/blinky.zig" },
+        .{ .name = "ds18b20", .file = "src/ds18b20.zig" },
         .{ .name = "gpio-clock-output", .file = "src/gpio_clock_output.zig" },
         .{ .name = "gpio-interrupts", .file = "src/gpio_irq.zig" },
         .{ .name = "changing-system-clocks", .file = "src/changing_system_clocks.zig" },
@@ -72,9 +72,13 @@ pub fn build(b: *std.Build) void {
         .{ .name = "system_timer", .file = "src/system_timer.zig" },
         .{ .name = "stepper_driver", .file = "src/stepper_driver.zig" },
         .{ .name = "stepper_driver_dumb", .file = "src/stepper_driver_dumb.zig" },
+        .{ .name = "usb-hid", .file = "src/usb_hid.zig" },
         .{ .name = "usb-cdc", .file = "src/usb_cdc.zig" },
         .{ .name = "dma", .file = "src/dma.zig" },
         .{ .name = "cyw43", .file = "src/cyw43.zig" },
+        .{ .name = "cyw43-blinky", .file = "src/cyw43/blinky.zig" },
+        .{ .name = "cyw43-wifi-scan", .file = "src/cyw43/wifi_scan.zig" },
+        .{ .name = "cyw43-wifi-connect", .file = "src/cyw43/wifi_connect.zig" },
         .{ .name = "allocator", .file = "src/allocator.zig" },
         .{ .name = "mlx90640", .file = "src/mlx90640.zig" },
         .{ .name = "ssd1306", .file = "src/ssd1306_oled.zig", .imports = &.{
@@ -86,14 +90,14 @@ pub fn build(b: *std.Build) void {
     available_examples.appendSlice(specific_examples) catch @panic("out of memory");
     for (chip_agnostic_examples) |example| {
         available_examples.append(.{
-            .target = mb.ports.rp2xxx.boards.raspberrypi.pico,
+            .target = raspberrypi.pico,
             .name = b.fmt("pico_{s}", .{example.name}),
             .file = example.file,
             .imports = example.imports,
         }) catch @panic("out of memory");
 
         available_examples.append(.{
-            .target = mb.ports.rp2xxx.boards.raspberrypi.pico2_arm,
+            .target = raspberrypi.pico2_arm,
             .name = b.fmt("pico2_arm_{s}", .{example.name}),
             .file = example.file,
             .imports = example.imports,
@@ -101,7 +105,7 @@ pub fn build(b: *std.Build) void {
 
         if (example.works_with_riscv) {
             available_examples.append(.{
-                .target = mb.ports.rp2xxx.boards.raspberrypi.pico2_riscv,
+                .target = raspberrypi.pico2_riscv,
                 .name = b.fmt("pico2_riscv_{s}", .{example.name}),
                 .file = example.file,
                 .imports = example.imports,

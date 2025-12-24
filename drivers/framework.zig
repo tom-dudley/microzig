@@ -45,6 +45,7 @@ pub const led = struct {
 pub const sensor = struct {
     pub const AS5600 = @import("sensor/AS5600.zig").AS5600;
     pub const HTS221 = @import("sensor/HTS221.zig").HTS221;
+    pub const DS18B20 = @import("sensor/DS18B20.zig").DS18B20;
     pub const ICM_20948 = @import("sensor/ICM-20948.zig").ICM_20948;
     pub const MLX90640 = @import("sensor/MLX90640.zig").MLX90640;
     pub const MPU_6050 = @import("sensor/MPU-6050.zig").MPU_6050;
@@ -68,6 +69,7 @@ pub const IO_expander = struct {
 };
 
 pub const wireless = struct {
+    pub const cyw43 = @import("wireless/cyw43/cyw43.zig");
     pub const cyw43_bus = @import("wireless/cyw43/bus.zig");
     pub const cyw43_runner = @import("wireless/cyw43/runner.zig");
     pub const Cyw43_Spi = cyw43_bus.Cyw43_Spi;
@@ -206,6 +208,7 @@ pub const base = struct {
     pub const Stream_Device = @import("base/Stream_Device.zig");
     pub const Digital_IO = @import("base/Digital_IO.zig");
     pub const Clock_Device = @import("base/Clock_Device.zig");
+    pub const Block_Memory = @import("base/Block_Memory.zig");
     pub const I2C_Device = @import("base/I2C_Device.zig");
 };
 
@@ -238,6 +241,7 @@ test {
     _ = base.Datagram_Device;
     _ = base.Stream_Device;
     _ = base.Digital_IO;
+    _ = base.Block_Memory;
     _ = base.Clock_Device;
     _ = base.I2C_Device;
 }
